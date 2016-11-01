@@ -14,7 +14,7 @@ public class EqualsJsonValue {
 
     private static String log1;
     private String message;
-    private static Logger log = (Logger) LoggerFactory.getLogger(EqualsJson.class);
+    private static Logger log = (Logger) LoggerFactory.getLogger(EqualsJsonType.class);
 
     public EqualsJsonValue() {
         // TODO Auto-generated constructor stub
@@ -42,10 +42,10 @@ public class EqualsJsonValue {
             }
 
             else{ // 响应存在key：则查询value是否正确
-                String thisKeyValue = standardJson.get(key).toString(); //获取当前Key的标准值
-                String respKetClass = responseJson.get(key).getClass().getName(); // 获取响应的字段类型
-                if(respKetClass.equals("org.json.JSONObject")){ //object类型的字段继续往内层判断
-                    err_message += "\n"+ key +" JSON:" + equalsJsonValue(standardJson.getJSONObject(key), responseJson.getJSONObject(key)); //!!进入递归时，保存当前错误信息
+                String thisKeyType = standardJson.get(key).getClass().getName(); //获取当前Key的标准值
+                String thisKeyValue = standardJson.get(key).toString(); //获取当前Key的类型
+                if(thisKeyType.equals("org.json.JSONObject")){ //object类型的字段继续往内层判断
+                    err_message += equalsJsonValue(standardJson.getJSONObject(key), responseJson.getJSONObject(key)); //!!进入递归时，保存当前错误信息
                 }
                 else{
                     String respKeyValue = responseJson.get(key).toString(); //获取响应的字段值
@@ -66,7 +66,6 @@ public class EqualsJsonValue {
         JSONObject responseJson = jo.getJSONObject("data");
         message = equalsJsonValue(standardJson, responseJson);
         log.info("------------------------ResultMessage--------------------" + message);
-        System.out.println(message);
         if(message == ""){    //如果错误信息是空，说明断言结果通过
             return true;
         }

@@ -18,7 +18,7 @@ public class EqualsJsonValue {
 
     public EqualsJsonValue() {
         // TODO Auto-generated constructor stub
-        System.out.println("init!");
+        log.debug("init!");
     }
 
     private  String equalsJsonValue(JSONObject standardJson, JSONObject responseJson) {//输入两个json，判断第一个里面的所有字段在第二个中的类型是否相同

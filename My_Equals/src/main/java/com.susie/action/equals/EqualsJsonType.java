@@ -61,7 +61,7 @@ public class EqualsJsonType {
 	    JSONObject responseJson = jo.getJSONObject("data");
 		message = equalsJsonType(standardJson, responseJson);
 	    log.info("------------------------ResultMessage--------------------" + message);
-	    if(message == ""){    //如果错误信息是空，说明断言结果通过
+	    if(message.replaceAll(" ","").equals("")){    //如果错误信息是空，说明断言结果通过
 	    	return true;
 	    }
 	    return false;

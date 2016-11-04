@@ -44,10 +44,14 @@ public class EqualsJsonValue {
             else{ // 响应存在key：则查询value是否正确
                 String thisKeyType = standardJson.get(key).getClass().getName(); //获取当前Key的标准值
                 String thisKeyValue = standardJson.get(key).toString(); //获取当前Key的类型
-                if(thisKeyType.equals("org.json.JSONObject")){ //object类型的字段继续往内层判断
+
+                if(responseJson.isNull(key)){
+                    String log1 = "------ValueError : " + key + " is NULL (should be " + thisKeyValue + ")";
+                    log.info("!!Failed: " + log1);
+                    err_message = (err_message + "\n" + log1);
+                } else if(thisKeyType.equals("org.json.JSONObject")){ //object类型的字段继续往内层判断
                     err_message += equalsJsonValue(standardJson.getJSONObject(key), responseJson.getJSONObject(key)); //!!进入递归时，保存当前错误信息
-                }
-                else{
+                } else {
                     String respKeyValue = responseJson.get(key).toString(); //获取响应的字段值
                     if(!respKeyValue.equals(thisKeyValue)){
                         String log1 = "------ValueError : " + key + " is " + respKeyValue + " (should be " + thisKeyValue + ")";
